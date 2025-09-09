@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+*.sqlite3
+*.db
+*.csv
+*.tsv
+*.h5
+*.hdf5
+*.pth
+*.tar
+*.bin
+*.npz
+*.npy
+*.mat
+*.m
+
+# Jupyter Notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+*.env
+angle-env/
+angle-env/*
+!angle-env/pyvenv.cfg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Images and outputs
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+*.mov
+*.webm
+images/
+
+# Misc
+*.bak
+*.swp
+*.tmp
+
+# Ignore checkpoints and model weights
+checkpoint/
+checkpoint/*
+!checkpoint/README.md
+
+# Ignore VideoPose3D datasets
+VideoPose3D/data/
+VideoPose3D/data/*
+!VideoPose3D/data/README.md
