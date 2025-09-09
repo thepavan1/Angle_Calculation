@@ -1,16 +1,20 @@
+
 # Angle Extraction Project
 
 ## Overview
-This project provides tools for extracting 3D joint angles from 2D keypoints, with a focus on human pose estimation using deep learning. The main script, `app.py`, offers the most accurate and robust results compared to other approaches in the repository.
+This project implements real-time human joint angle extraction using **2D keypoints only**. While there is an experimental attempt at 3D angle calculation using a single webcam, it is not robust and tends to be jittery. The recommended and most accurate results are obtained from the main script, `app.py`, which uses 2D pose estimation and advanced filtering for smooth angle computation.
+
+## Component Overview
+- **MediaPipe Pose:** High-accuracy body landmark detection from video frames (2D only)
+- **Vector Mathematics:** Joint angle computation using the arccosine formula on 2D vectors
+- **One-Euro Filter:** Adaptive temporal smoothing for stable angle output
+- **OpenCV:** Real-time video processing and visualization
 
 ## Main Features
-- **Best-in-class 3D angle extraction:** The `app.py` script is the recommended entry point, providing reliable and accurate 3D joint angle estimation from 2D keypoints.
-- **OpenPose 2D keypoint support:** Easily process OpenPose JSON outputs in COCO format.
-- **VideoPose3D integration:** Lift 2D keypoints to 3D using pretrained deep learning models from the [VideoPose3D](https://github.com/facebookresearch/VideoPose3D) repository.
-- **Multiple modes:** Choose between naive lifting and advanced deep learning-based lifting (`videopose3d` mode).
-- **Batch processing:** Efficiently process folders of JSON files and export results to CSV.
-- **Angle calculation:** Compute joint angles from estimated 3D coordinates.
-- **Command-line interface:** Flexible CLI for specifying input/output paths, model checkpoints, and processing modes.
+- **2D joint angle extraction:** Accurate and robust angle estimation from 2D keypoints
+- **Real-time processing:** Fast video capture and visualization
+- **Temporal smoothing:** One-Euro filter reduces jitter and noise
+- **Command-line interface:** Flexible CLI for specifying input/output paths and processing modes
 
 ## Usage
 
@@ -19,43 +23,38 @@ This project provides tools for extracting 3D joint angles from 2D keypoints, wi
 python app.py \
     --json_dir path/to/openpose_jsons \
     --out_csv out_angles.csv \
-    --mode videopose3d \
-    --vp3d_ckpt checkpoint/pretrained_h36m_detectron_coco.bin
+    --mode mediapipe
 ```
 
 ### Arguments
-- `--json_dir`: Path to folder containing OpenPose JSONs.
-- `--out_csv`: Output CSV file for angles.
-- `--mode`: Lifting mode (`naive` or `videopose3d`).
-- `--vp3d_ckpt`: Path to VideoPose3D checkpoint (required for `videopose3d` mode).
+- `--json_dir`: Path to folder containing pose estimation JSONs
+- `--out_csv`: Output CSV file for angles
+- `--mode`: Processing mode (`mediapipe` for 2D, `naive` for simple math, `videopose3d` for experimental 3D)
 
 ## Project Structure
-- `app.py`: **Recommended main script** for angle extraction.
-- `lift_and_angles.py`: Alternative script; less accurate than `app.py`.
-- `realtime_3d_angles.py`: Real-time demo; not as robust or accurate.
-- `VideoPose3D/`: Contains the VideoPose3D repo for deep learning-based lifting.
-- `angle-env/`: Python virtual environment (ignored in version control).
+- `app.py`: **Recommended main script** for 2D angle extraction (best results)
+- `lift_and_angles.py`: Alternative script; less accurate than `app.py`
+- `realtime_3d_angles.py`: Experimental real-time 3D demo; not robust or accurate
+- `VideoPose3D/`: Contains the VideoPose3D repo (for experimental 3D lifting)
+- `angle-env/`: Python virtual environment (ignored in version control)
 
 ## Requirements
 - Python 3.10+
-- PyTorch
 - numpy
 - matplotlib
 - tqdm
 - opencv-python
-- scipy
-- absl-py
-- pyyaml
+- mediapipe
 
 Install dependencies with:
 ```bash
-pip install torch numpy matplotlib tqdm opencv-python scipy absl-py pyyaml
+pip install numpy matplotlib tqdm opencv-python mediapipe
 ```
 
 ## Notes
-- For best results, use `app.py` with the `videopose3d` mode and a suitable pretrained checkpoint.
+- The project is designed for 2D keypoint-based angle extraction. 3D calculation using a single webcam is experimental and not recommended for production use.
+- For best results, use `app.py` with the default 2D mode and One-Euro filter enabled.
 - The real-time script (`realtime_3d_angles.py`) is experimental and less accurate.
-- The naive lifting mode is provided for comparison and simple use cases.
 
 ## License
 See `VideoPose3D/LICENSE` for third-party code licensing.
