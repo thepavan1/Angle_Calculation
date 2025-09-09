@@ -1,8 +1,9 @@
 
+
 # Angle Extraction Project
 
 ## Overview
-This project implements real-time human joint angle extraction using **2D keypoints only**. While there is an experimental attempt at 3D angle calculation using a single webcam, it is not robust and tends to be jittery. The recommended and most accurate results are obtained from the main script, `app.py`, which uses 2D pose estimation and advanced filtering for smooth angle computation.
+This project provides real-time human joint angle extraction using **2D keypoints**. The main script, `app.py`, delivers accurate and smooth angle estimation from live webcam video, leveraging state-of-the-art pose detection and filtering techniques.
 
 ## Component Overview
 - **MediaPipe Pose:** High-accuracy body landmark detection from video frames (2D only)
@@ -11,50 +12,38 @@ This project implements real-time human joint angle extraction using **2D keypoi
 - **OpenCV:** Real-time video processing and visualization
 
 ## Main Features
-- **2D joint angle extraction:** Accurate and robust angle estimation from 2D keypoints
+- **2D joint angle extraction:** Robust angle estimation from 2D keypoints
 - **Real-time processing:** Fast video capture and visualization
-- **Temporal smoothing:** One-Euro filter reduces jitter and noise
-- **Command-line interface:** Flexible CLI for specifying input/output paths and processing modes
+- **Temporal smoothing:** One-Euro filter reduces jitter and noise for smooth angle display
+- **Visual feedback:** Angles and arcs are drawn directly on the video feed for intuitive understanding
 
 ## Usage
 
-### Example Command
+Run the main application:
 ```bash
-python app.py \
-    --json_dir path/to/openpose_jsons \
-    --out_csv out_angles.csv \
-    --mode mediapipe
+python app.py
 ```
 
-### Arguments
-- `--json_dir`: Path to folder containing pose estimation JSONs
-- `--out_csv`: Output CSV file for angles
-- `--mode`: Processing mode (`mediapipe` for 2D, `naive` for simple math, `videopose3d` for experimental 3D)
+The application will open your webcam, detect body landmarks, compute joint angles (elbow, knee, shoulder, hip), and display them in real time with smooth filtering and visual overlays. Press 'q' to quit.
 
 ## Project Structure
 - `app.py`: **Recommended main script** for 2D angle extraction (best results)
 - `lift_and_angles.py`: Alternative script; less accurate than `app.py`
-- `realtime_3d_angles.py`: Experimental real-time 3D demo; not robust or accurate
-- `VideoPose3D/`: Contains the VideoPose3D repo (for experimental 3D lifting)
+- `realtime_3d_angles.py`: Alternative real-time demo
 - `angle-env/`: Python virtual environment (ignored in version control)
 
 ## Requirements
 - Python 3.10+
 - numpy
-- matplotlib
-- tqdm
 - opencv-python
 - mediapipe
 
 Install dependencies with:
 ```bash
-pip install numpy matplotlib tqdm opencv-python mediapipe
+pip install numpy opencv-python mediapipe
 ```
 
 ## Notes
-- The project is designed for 2D keypoint-based angle extraction. 3D calculation using a single webcam is experimental and not recommended for production use.
-- For best results, use `app.py` with the default 2D mode and One-Euro filter enabled.
-- The real-time script (`realtime_3d_angles.py`) is experimental and less accurate.
+- The project is designed for 2D keypoint-based angle extraction only.
+- For best results, use `app.py` with a clear view of your full body in the webcam frame.
 
-## License
-See `VideoPose3D/LICENSE` for third-party code licensing.
