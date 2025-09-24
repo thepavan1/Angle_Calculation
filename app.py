@@ -5,9 +5,6 @@ import time
 import math
 
 
-# ===============================
-# One-Euro Filter Implementation
-# ===============================
 class OneEuroFilter:
     def __init__(self, freq=30, mincutoff=1.0, beta=0.01, dcutoff=1.0):
         self.freq = freq
@@ -52,7 +49,6 @@ class OneEuroFilter:
         return x_hat
 
 
-# Dictionary of filters for each angle
 filters = {}
 def get_filter(name):
     if name not in filters:
@@ -60,9 +56,7 @@ def get_filter(name):
     return filters[name]
 
 
-# ===============================
-# Initialize MediaPipe Pose
-# ===============================
+
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -77,9 +71,6 @@ pose = mp_pose.Pose(static_image_mode=False,
                     min_tracking_confidence=0.7)
 
 
-# ===============================
-# Helper Functions
-# ===============================
 def calculate_angle(a, b, c):
     try:
         a, b, c = np.array(a), np.array(b), np.array(c)
@@ -135,9 +126,7 @@ def draw_angle_arc(img, point_a, point_b, point_c, color):
         pass
 
 
-# ===============================
-# Webcam Setup
-# ===============================
+
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
@@ -222,7 +211,7 @@ while cap.isOpened():
                                (joint_x + 15, joint_y),
                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-                    # Draw arc on joint to represent angle
+                    
                     draw_angle_arc(frame, points[0], points[1], points[2], color)
 
 
