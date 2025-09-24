@@ -1,13 +1,21 @@
-# Python
+dist/
+build/
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.so
+
+# Distribution / packaging
 *.egg
 *.egg-info/
 dist/
 build/
+*.whl
+
+# Logs and databases
 *.log
 *.sqlite3
 *.db
@@ -30,18 +38,18 @@ build/
 # VS Code
 .vscode/
 
-# Environment
+# Environment variables and virtualenv
 .env
 *.env
 angle-env/
 angle-env/*
 !angle-env/pyvenv.cfg
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Images and outputs
+# Images, videos, and outputs
 *.png
 *.jpg
 *.jpeg
@@ -52,17 +60,30 @@ Thumbs.db
 *.webm
 images/
 
-# Misc
+# Miscellaneous
 *.bak
 *.swp
 *.tmp
 
-# Ignore checkpoints and model weights
+# Model checkpoints and weights
 checkpoint/
 checkpoint/*
 !checkpoint/README.md
 
-# Ignore VideoPose3D datasets
-VideoPose3D/data/
-VideoPose3D/data/*
-!VideoPose3D/data/README.md
+# Data folders (add/remove as needed)
+data/
+datasets/
+output/
+results/
+
+# Large files (add extensions as needed)
+*.pt
+*.onnx
+*.pb
+*.ckpt
+*.weights
+
+# System files
+ehthumbs.db
+Icon?
+Desktop.ini
