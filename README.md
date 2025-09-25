@@ -35,10 +35,21 @@ This project provides real-time human joint angle extraction from video using bo
 python app.py
 ```
 
+
 ### 2D Angle Extraction (YOLOv8)
 ```bash
 python appyolo.py
 ```
+
+### 2D Angle Extraction from IP Webcam (YOLOv8)
+- **Script:** `appyoloipcam.py`
+- **Description:** Connects to an IP webcam (e.g., Android IP Webcam app) via HTTP snapshot, runs YOLOv8 pose estimation, calculates and smooths joint angles, overlays results, and saves processed frames every 3 seconds.
+- **Usage:**
+	```bash
+	python appyoloipcam.py
+	```
+- **Requirements:** IP webcam accessible at the configured URL (default: `http://192.168.1.248:8080/shot.jpg`)
+- **Output:** Processed frames saved in the `processed_frames` directory.
 
 ### 3D Angle Extraction (Experimental)
 ```bash

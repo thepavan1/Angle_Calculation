@@ -85,7 +85,7 @@ def draw_angle_arc(img, a, b, c, color):
         pass
 
 
-# Load YOLOv8 pose model - adjust 'yolov8n-pose.pt' path as needed
+
 model = YOLO('yolov8n-pose.pt')
 
 
@@ -102,11 +102,6 @@ angles_to_calculate = [
 ]
 
 
-# --- UPDATED SKELETON CONNECTIONS FOR NEAT POSE ---
-# Indices: [nose, l_eye, r_eye, l_ear, r_ear, l_shoulder, r_shoulder,
-#           l_elbow, r_elbow, l_wrist, r_wrist, l_hip, r_hip, l_knee, r_knee, l_ankle, r_ankle]
-
-# Only draw lines essential for neat limb and body connections
 skeleton = [
     (6, 8),   # L Shoulder - L Elbow
     (8, 10),  # L Elbow - L Wrist
@@ -122,7 +117,7 @@ skeleton = [
     (12, 11), # L Hip - R Hip
     (6, 5),   # Neck-Shoulder line for upper body
 ]
-# ---------------------------------------------------
+
 
 
 
@@ -156,24 +151,21 @@ while True:
     results = model(frame)[0]
 
     if results.keypoints is not None and len(results.keypoints) > 0:
-        keypoints = results.keypoints[0].data.cpu().numpy()  # get raw tensor from Keypoints object
+        keypoints = results.keypoints[0].data.cpu().numpy() 
         if keypoints.ndim == 3:
             keypoints = keypoints[0]
-        # keypoints shape: (num_keypoints, 3) [x, y, confidence]
 
-        # Draw keypoints
+
         for i, (x, y, conf) in enumerate(keypoints):
             if conf > 0.3:
                 cv2.circle(frame, (int(x), int(y)), 4, (0, 255, 255), -1)
 
-        # Draw updated neat skeleton lines
         for (i1, i2) in skeleton:
             if keypoints[i1][2] > 0.3 and keypoints[i2][2] > 0.3:
                 pt1 = (int(keypoints[i1][0]), int(keypoints[i1][1]))
                 pt2 = (int(keypoints[i2][0]), int(keypoints[i2][1]))
                 cv2.line(frame, pt1, pt2, (255, 255, 255), thickness=2)
 
-        # Draw angles and calculate
         timestamp = time.time()
         y_offset = 30
         for name, (ia, ib, ic), color in angles_to_calculate:
@@ -181,24 +173,24 @@ while True:
             b = keypoints[ib][:2]
             c = keypoints[ic][:2]
             confs = [keypoints[pt][2] for pt in (ia, ib, ic)]
-            # Only calculate if all confidence > 0.3
+            
             if all([conf > 0.3 for conf in confs]):
                 angle = calculate_angle(a, b, c)
                 if angle is not None:
                     filt = get_filter(name)
                     smooth_angle = filt.filter(timestamp, angle)
-                    # Text sidebar
+                    
                     cv2.putText(frame, f"{name}: {smooth_angle:.1f} deg", (10, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
                     y_offset += 25
-                    # Angle text near joint
+                    
                     cv2.putText(frame, f"{smooth_angle:.0f} deg", (int(b[0]) + 10, int(b[1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-                    # Angle arc visualization
+                    
                     draw_angle_arc(frame, a, b, c, color)
 
     else:
         cv2.putText(frame, "No person detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
-    # Save processed frame every 3 seconds
+    
     current_time = time.time()
     if current_time - last_save_time >= 3.0:
         save_path = os.path.join(save_dir, f"frame_{frame_count:06d}.jpg")
